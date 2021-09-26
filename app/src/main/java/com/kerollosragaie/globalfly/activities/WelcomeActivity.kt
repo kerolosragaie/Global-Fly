@@ -40,6 +40,8 @@ class WelcomeActivity : AppCompatActivity() {
 			}
 
 			override fun onFailure(call: retrofit2.Call<String>, t: Throwable) {
+				Toast.makeText(this@WelcomeActivity,"Failed to retrieve items",
+					Toast.LENGTH_LONG).show()
 			}
 
 		})

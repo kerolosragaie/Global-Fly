@@ -83,25 +83,57 @@ class DestinationDetailActivity : AppCompatActivity() {
 
 		btn_update.setOnClickListener {
 
-            // To be replaced by retrofit code
-            /*val destination = Destination()
-            destination.id = id
-            destination.city = city
-            destination.description = description
-            destination.country = country*/
+            val destinationService:DestinationService = ServiceBuilder.buildService(DestinationService::class.java)
+			val requestCall : Call<Destination> = destinationService.updateDestination(
+				destination.id,
+				Destination(
+					id = destination.id,
+					city = et_city.text.toString(),
+					country = et_country.text.toString(),
+					description = et_description.text.toString(),
+					image = destination.image.toString(),
+				),
+			)
+			requestCall.enqueue(object : Callback<Destination>{
+				override fun onResponse(call: Call<Destination>, response: Response<Destination>) {
+					if(response.isSuccessful){
+						//val updatedDestination:Destination = response.body()!! //use or ignore it
+						Toast.makeText(this@DestinationDetailActivity,"Item updated successfully!",Toast.LENGTH_LONG).show()
+						finish() // Move back to DestinationListActivity
+					}else{
+						Toast.makeText(this@DestinationDetailActivity,"Failed to update",Toast.LENGTH_LONG).show()
+					}
+				}
+				override fun onFailure(call: Call<Destination>, t: Throwable) {
+					Toast.makeText(this@DestinationDetailActivity,t.toString(),Toast.LENGTH_LONG).show()
+				}
 
-            SampleData.updateDestination(destination)
-            finish() // Move back to DestinationListActivity
+			})
+
 		}
 	}
 
 	private fun initDeleteButton(destination: Destination) {
 
 		btn_delete.setOnClickListener {
+            val destinationService:DestinationService = ServiceBuilder.buildService(DestinationService::class.java)
+			val requestCall = destinationService.deleteDestination(destination.id)
+			requestCall.enqueue(object : Callback<Unit>{
+				override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+					if(response.isSuccessful){
+						finish() // Move back to DestinationListActivity
+						Toast.makeText(this@DestinationDetailActivity,"Successfully deleted",Toast.LENGTH_LONG).show()
+					}else{
+						Toast.makeText(this@DestinationDetailActivity,"Failed to delete",Toast.LENGTH_LONG).show()
+					}
+				}
 
-            // To be replaced by retrofit code
-            SampleData.deleteDestination(destination.id)
-            finish() // Move back to DestinationListActivity
+				override fun onFailure(call: Call<Unit>, t: Throwable) {
+					Toast.makeText(this@DestinationDetailActivity,"Failed to Delete",Toast.LENGTH_LONG).show()
+				}
+
+			})
+
 		}
 	}
 

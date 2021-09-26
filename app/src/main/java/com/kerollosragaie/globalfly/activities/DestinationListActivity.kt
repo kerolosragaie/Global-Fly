@@ -42,11 +42,14 @@ class DestinationListActivity : AppCompatActivity() {
         // To be replaced by retrofit code
 		//destiny_recycler_view.adapter = DestinationAdapter(SampleData.DESTINATIONS)
 		val destinationService :DestinationService = ServiceBuilder.buildService(DestinationService::class.java)
-		/*val filter = HashMap<String,String>()
-		filter["country"] = "India"
-		filter["count"]="1"*/
+		val filter = HashMap<String,String>()
+		//filter["country"] = "India"
+		//filter["count"]="1"
 
-		val requestCall: Call<List<Destination>> = destinationService.getDestinationList()
+		val requestCall: Call<List<Destination>> = destinationService.getDestinationList(
+			filter,
+			"EN"
+		)
 		requestCall.enqueue(object : Callback<List<Destination>> {
 			override fun onResponse(
 				call: Call<List<Destination>>,
