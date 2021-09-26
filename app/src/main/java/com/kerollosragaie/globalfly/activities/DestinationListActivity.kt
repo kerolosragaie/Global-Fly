@@ -2,7 +2,6 @@ package com.kerollosragaie.globalfly.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kerollosragaie.globalfly.R
@@ -41,15 +40,13 @@ class DestinationListActivity : AppCompatActivity() {
 
         // To be replaced by retrofit code
 		//destiny_recycler_view.adapter = DestinationAdapter(SampleData.DESTINATIONS)
-		val destinationService :DestinationService = ServiceBuilder.buildService(DestinationService::class.java)
+		val destinationService : DestinationService =  ServiceBuilder.buildService(DestinationService::class.java)
 		val filter = HashMap<String,String>()
 		//filter["country"] = "India"
 		//filter["count"]="1"
 
-		val requestCall: Call<List<Destination>> = destinationService.getDestinationList(
-			filter,
-			"EN"
-		)
+		val requestCall: Call<List<Destination>> = destinationService.getDestinationList(filter)
+
 		requestCall.enqueue(object : Callback<List<Destination>> {
 			override fun onResponse(
 				call: Call<List<Destination>>,
@@ -64,7 +61,12 @@ class DestinationListActivity : AppCompatActivity() {
 			}
 
 			override fun onFailure(call: Call<List<Destination>>, t: Throwable) {
-				Toast.makeText(this@DestinationListActivity,t.toString(),Toast.LENGTH_LONG).show()
+				//requestCall.isCanceled if used pressed on button and canceled request by himself
+				if(requestCall.isCanceled){
+					Toast.makeText(this@DestinationListActivity,"Request canceled by the user",Toast.LENGTH_LONG).show()
+				}else{
+					Toast.makeText(this@DestinationListActivity,t.toString(),Toast.LENGTH_LONG).show()
+				}
 			}
 
 		})

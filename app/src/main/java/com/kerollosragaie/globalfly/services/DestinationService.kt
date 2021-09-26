@@ -17,12 +17,12 @@ interface DestinationService {
      * @Headers : to send some values from client to server and device type or language, etc..
      * */
 
-    @Headers("x-device-type: Android","x-foo: bar")
+    //@Headers("x-device-type: Android","x-foo: bar")
     @GET("destination")
     //@QueryMap filter:HashMap<String,String>?
     fun getDestinationList(
         @QueryMap filter: HashMap<String, String>,
-        @Header("Accept-Language") language: String,
+       // @Header("Accept-Language") language: String,
     ): Call<List<Destination>>
 
 

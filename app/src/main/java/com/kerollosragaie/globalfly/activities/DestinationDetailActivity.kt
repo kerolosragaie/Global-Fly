@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.kerollosragaie.globalfly.R
 import com.kerollosragaie.globalfly.models.Destination
 import com.kerollosragaie.globalfly.services.DestinationService
 import com.kerollosragaie.globalfly.services.ServiceBuilder
 import kotlinx.android.synthetic.main.activity_destiny_detail.*
+import kotlinx.android.synthetic.main.activity_welcome.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -49,11 +51,13 @@ class DestinationDetailActivity : AppCompatActivity() {
 
 	private fun loadDetails(destination: Destination) {
 
-		destination?.let {
+		destination.let {
 			et_city.setText(destination.city)
 			et_description.setText(destination.description)
 			et_country.setText(destination.country)
 			collapsing_toolbar.title = destination.city
+			Glide.with(iv_background).load(destination.image)
+				.placeholder(R.drawable.toolbar_background).into(iv_background)
 		}
 		//To get data with using path by Retrofit
 		/*val destinationService : DestinationService = ServiceBuilder.buildService(DestinationService::class.java)
