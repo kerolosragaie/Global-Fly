@@ -8,6 +8,8 @@
 		android:fitsSystemWindows="true"
 		tools:context=".activities.DestinationListActivity">
 
+
+
 	<com.google.android.material.appbar.AppBarLayout
 			android:id="@+id/app_bar"
 			android:layout_width="match_parent"
@@ -44,6 +46,8 @@
 				tools:context=".activities.DestinationListActivity"
 				tools:listitem="@layout/list_item"/>
 
+
+
 	</FrameLayout>
 
 	<com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -56,5 +60,27 @@
 			app:srcCompat="@android:drawable/ic_input_add"
 			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"/>
+
+	<include
+		android:id="@+id/error_box"
+		layout="@layout/error"
+		android:layout_height="match_parent"
+		android:layout_width="match_parent"
+		app:layout_constraintTop_toBottomOf="@id/app_bar"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintBottom_toBottomOf="parent"/>
+
+	<include
+		android:id="@+id/loading_bar2"
+		layout="@layout/loading_indicator"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		app:layout_constraintTop_toBottomOf="@id/app_bar"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintBottom_toBottomOf="parent"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

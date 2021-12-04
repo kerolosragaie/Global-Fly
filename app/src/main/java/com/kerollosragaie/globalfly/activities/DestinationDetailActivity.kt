@@ -30,7 +30,7 @@ class DestinationDetailActivity : AppCompatActivity() {
 		val bundle: Bundle? = intent.extras
 
 		//This calls current item id but better to call an object as below:
-		/*if (bundle?.containsKey(ARG_ITEM_ID)!!) {
+		/* if (bundle?.containsKey(ARG_ITEM_ID)!!) {
 
 			val id = intent.getIntExtra(ARG_ITEM_ID, 0)
 

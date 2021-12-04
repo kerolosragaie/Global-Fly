@@ -2,7 +2,7 @@ package com.kerollosragaie.globalfly.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.kerollosragaie.globalfly.R
 import com.kerollosragaie.globalfly.helpers.DestinationAdapter
@@ -10,6 +10,7 @@ import com.kerollosragaie.globalfly.models.Destination
 import com.kerollosragaie.globalfly.services.DestinationService
 import com.kerollosragaie.globalfly.services.ServiceBuilder
 import kotlinx.android.synthetic.main.activity_destiny_list.*
+import kotlinx.android.synthetic.main.error.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,7 +38,8 @@ class DestinationListActivity : AppCompatActivity() {
 	}
 
 	private fun loadDestinations() {
-
+		//show loading indicator:
+		loading_bar2.visibility = View.VISIBLE
         // To be replaced by retrofit code
 		//destiny_recycler_view.adapter = DestinationAdapter(SampleData.DESTINATIONS)
 		val destinationService : DestinationService =  ServiceBuilder.buildService(DestinationService::class.java)
@@ -52,23 +54,45 @@ class DestinationListActivity : AppCompatActivity() {
 				call: Call<List<Destination>>,
 				response: Response<List<Destination>>
 			) {
+				loading_bar2.visibility = View.GONE
 				if(response.isSuccessful){
 					val destinationList:List<Destination> = response.body()!!
 					destiny_recycler_view.adapter = DestinationAdapter(destinationList)
-				}else{//Application level failure:
-					Toast.makeText(this@DestinationListActivity,"Failed to retrieve items",Toast.LENGTH_LONG).show()
+				}else{
+					showErrorMessage("Failed to retrieve data.")
 				}
 			}
 
 			override fun onFailure(call: Call<List<Destination>>, t: Throwable) {
-				//requestCall.isCanceled if used pressed on button and canceled request by himself
+				loading_bar2.visibility = View.GONE
+				//requestCall.isCanceled if user pressed on button and canceled request by himself
 				if(requestCall.isCanceled){
-					Toast.makeText(this@DestinationListActivity,"Request canceled by the user",Toast.LENGTH_LONG).show()
+					showErrorMessage("Request canceled by the user.")
 				}else{
-					Toast.makeText(this@DestinationListActivity,t.toString(),Toast.LENGTH_LONG).show()
+					showErrorMessage(t.toString())
 				}
 			}
 
 		})
     }
+
+
+	private fun showErrorMessage(message:String){
+		if(error_box.visibility==View.GONE){
+			error_box.visibility=View.VISIBLE
+		}else{
+			error_box.visibility=View.GONE
+		}
+		error_box.tv_error_title.text="Error"
+		error_box.tv_error_message.text=message
+
+		error_box.btn_error_retry.setOnClickListener {
+			error_box.visibility=View.GONE
+			loadDestinations()
+		}
+
+
+	}
+
+
 }
